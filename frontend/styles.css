@@ -1,0 +1,563 @@
+/* =====================================================
+   GLOBAL RESET & BASE STYLES
+===================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body.page-body {
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f6f8f7;
+    color: #1a1a1a;
+    line-height: 1.6;
+}
+
+/* =====================================================
+   TYPOGRAPHY
+===================================================== */
+h1,
+h2,
+h3 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+}
+
+h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+p {
+    font-size: 1rem;
+    color: #4b5563;
+    max-width: 70ch;
+}
+
+.section-title {
+    margin-bottom: 0.75rem;
+}
+
+.section-description {
+    margin-bottom: 2.5rem;
+}
+
+/* =====================================================
+   HEADER & NAVIGATION
+===================================================== */
+.site-header {
+    background-color: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.main-navigation {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-brand .brand-name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1f7a5f;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-weight: 500;
+    color: #374151;
+    position: relative;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background-color: #1f7a5f;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* =====================================================
+   HERO / CAROUSEL
+===================================================== */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-container {
+    position: relative;
+    height: min(90vh, 720px);
+}
+
+.carousel-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.slide-active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(
+        90deg,
+        rgba(15, 47, 36, 0.85),
+        rgba(15, 47, 36, 0.3)
+    );
+    color: #ffffff;
+}
+
+.hero-title {
+    margin-bottom: 0.75rem;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: #e5e7eb;
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.indicator-active {
+    background-color: #ffffff;
+}
+
+/* =====================================================
+   DATA SOURCES
+===================================================== */
+.data-sources-section {
+    padding: 3rem 1.5rem;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.data-sources-logos {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
+.data-source-logo {
+    max-height: 48px;
+    opacity: 0.85;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.data-source-logo:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+.site-main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+}
+
+/* =====================================================
+   WORKFLOW
+===================================================== */
+.workflow-section {
+    margin-bottom: 5rem;
+}
+
+/* =====================================================
+   SIMULATION FORM
+===================================================== */
+/* Remove default fieldset borders */
+.simulation-form fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Optional: keep spacing for legends */
+.simulation-form legend {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    padding: 0;
+}
+
+.simulation-section {
+    background-color: #ffffff;
+    padding: 3rem;
+    border-radius: 18px;
+    box-shadow: 0 0 32px rgba(0, 0, 0, 0.048);
+    margin-bottom: 5rem;
+    position: relative; /* Needed for overlay to stay inside this section */
+}
+
+.simulation-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-legend {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.form-input,
+.form-select {
+    padding: 0.65rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #1f7a5f;
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+}
+
+.simulation-section button {
+    padding: 0.85rem 1.5rem;
+    background-color: #1f7a5f;
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.simulation-section button:hover {
+    background-color: #145a45;
+}
+
+/* ======================================== */
+/* Dropdown container */
+.checkbox-dropdown {
+    position: relative;
+    user-select: none;
+    margin-top: 0.5rem;
+}
+
+/* Header visible always */
+.dropdown-header {
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+/* Options hidden by default */
+.dropdown-options {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: none;
+    z-index: 20;
+    padding: 0.5rem;
+}
+
+/* Checkbox items */
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #374151;
+    cursor: pointer;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #1f7a5f;
+}
+
+/* Show options when active */
+.checkbox-dropdown.active .dropdown-options {
+    display: block;
+}
+
+
+
+/* =====================================================
+   SIMULATION OVERLAY (ONLY INSIDE SIMULATION SECTION)
+===================================================== */
+.simulation-overlay {
+    position: absolute; /* changed from fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.35); /* light frosted blur effect */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px; /* match parent section */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 10; /* higher than form content */
+}
+
+.overlay-content {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.096);
+}
+
+.simulation-section button {
+    margin-top: 10px;
+}
+
+
+/* =====================================================
+   CIRCULAR LOADER SPINNER
+===================================================== */
+.spinner-circle {
+    width: 60px;
+    height: 60px;
+    border: 6px solid rgba(31, 122, 95, 0.2); /* light track */
+    border-top-color: #1f7a5f; /* colored spinning line */
+    border-radius: 50%;
+    animation: spin-circle 1s linear infinite;
+    margin: 0 auto 1.5rem auto; /* center above title */
+}
+
+.simulation-section.is-blurred {
+    filter: 0;
+    pointer-events: none;
+}
+
+
+@keyframes spin-circle {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Optional: scale loader on small screens */
+@media (max-width: 480px) {
+    .spinner-circle {
+        width: 40px;
+        height: 40px;
+        border-width: 4px;
+    }
+}
+
+
+/* =====================================================
+   RESULTS
+===================================================== */
+.results-section {
+    margin-bottom: 5rem;
+}
+
+.subsection-description {
+    margin-bottom: 10px;
+}
+
+
+.chart-controls {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.chart-button {
+    padding: 0.5rem 1rem;
+    border-radius: 24px;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
+    cursor: pointer;
+}
+
+/* Make chart containers wider */
+.chart-container {
+    min-height: 400px;  /* was 220px */
+    border: none;  /* remove dashed border */
+    display: block;  /* was flex */
+    width: 100%;
+    padding: 1.5rem;
+}
+
+#climate-chart,
+#yield-chart {
+    width: 100% !important;
+    max-width: 100%;
+}
+
+.climate-results,
+.yield-results {
+    max-width: 100%;  /* full width */
+    padding: 2rem;
+}
+
+.results-section {
+    max-width: 1400px;  /* wider than default */
+    margin: 0 auto;
+}
+
+/* =====================================================
+   AI RECOMMENDATION
+===================================================== */
+.ai-recommendation-section {
+    background-color: #0f2f24;
+    color: #ffffff;
+    padding: 4rem 3rem;
+    border-radius: 20px;
+}
+
+.ai-recommendation-section p {
+    color: #d1fae5;
+}
+
+.ai-output {
+    margin-top: 2rem;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+.site-footer {
+    display: flex;
+    flex-direction: column;
+    background-color: #0b1f18;
+    color: #d1fae5;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    align-items: center;
+
+}
+
+.footer-text {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+/* =====================================================
+   RESPONSIVE ADJUSTMENTS
+===================================================== */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .simulation-section {
+        padding: 2rem;
+    }
+
+    .ai-recommendation-section {
+        padding: 3rem 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-caption {
+        padding: 1.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+}
