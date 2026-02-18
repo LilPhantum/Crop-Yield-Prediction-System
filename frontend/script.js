@@ -112,7 +112,7 @@ simulationForm.addEventListener('submit', async (event) => {
     simulationController = new AbortController();
 
     try {
-        const response = await fetch("http://127.0.0.1:3000/predict", {
+        const response = await fetch("http://localhost:3000/predict", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
