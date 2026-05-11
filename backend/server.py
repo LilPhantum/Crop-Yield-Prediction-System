@@ -3,12 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List
+from dotenv import load_dotenv
+from google import genai
 import joblib
 import numpy as np
 import os
 import warnings
 
 warnings.filterwarnings('ignore', message='X does not have valid feature names')
+
+load_dotenv("gemini.env")
 
 app = FastAPI()
 
@@ -23,6 +27,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Gemini client
+gemini_client = genai.Client()
 
 # Country climate data
 COUNTRIES = {
@@ -48,6 +55,7 @@ CROPS = {
     'potatoes': 'Potatoes',
     'soybeans': 'Soybeans'
 }
+
 
 class Request(BaseModel):
     crops: List[str]
@@ -84,57 +92,140 @@ def make_features(rain, temp, pest=6000):
 def predict_crop(crop_name, rain, temp):
     model_path = f"models/model_{crop_name}.pkl"
     model_data = joblib.load(model_path)
-    
+
     features = make_features(rain, temp)
     X = np.array([[features.get(f, 0) for f in model_data['features']]])
-    
+
     if model_data['type'] == 'Ensemble':
         w = model_data['weights']
-        pred = (w['rf'] * model_data['rf_model'].predict(X)[0] +
-                w['gb'] * model_data['gb_model'].predict(X)[0] +
-                w['ridge'] * model_data['ridge_model'].predict(
-                    model_data['ridge_scaler'].transform(X))[0])
+        pred = (
+            w['rf'] * model_data['rf_model'].predict(X)[0] +
+            w['gb'] * model_data['gb_model'].predict(X)[0] +
+            w['ridge'] * model_data['ridge_model'].predict(
+                model_data['ridge_scaler'].transform(X)
+            )[0]
+        )
+
     elif model_data['type'] == 'Ridge':
         X_scaled = model_data['model']['scaler'].transform(X)
         pred = model_data['model']['model'].predict(X_scaled)[0]
+
     else:
         pred = model_data['model'].predict(X)[0]
-    
+
     return pred
+
+
+def limit_text(text, max_chars=700):
+    text = text.strip()
+
+    if len(text) > max_chars:
+        return text[:697].rstrip() + "..."
+
+    return text
+
+
+def fallback_recommendation(country, land_size, climate, results):
+    best_crop = max(results, key=lambda item: item["yield_per_ha"])
+    country_name = country.replace("_", " ").title()
+
+    text = (
+        f"{best_crop['crop']} is the strongest option in this simulation, "
+        f"with the highest predicted yield of {best_crop['yield_per_ha']:,.0f} hg/ha. "
+        f"For {land_size} hectares in {country_name}, prioritize this crop while monitoring rainfall "
+        f"and temperature. This is a 2026 simulation result, so it should guide planning, not guarantee output."
+    )
+
+    return limit_text(text)
+
+
+def generate_ai_recommendation(country, land_size, climate, results):
+    prompt = f"""
+You are an agricultural simulation assistant.
+
+Use only the simulation data provided below.
+Write one practical crop recommendation for a farmer.
+Maximum length: 700 characters.
+Use one short paragraph only.
+Do not use bullet points, markdown, headings, or long explanations.
+Recommend only from the selected crops.
+Mention the strongest crop based on predicted yield.
+Mention climate suitability using rainfall or temperature if useful.
+Do not make guarantees.
+Do not invent facts.
+Do not recommend crops outside the selected crops.
+
+Simulation data:
+Country: {country.replace("_", " ").title()}
+Land size: {land_size} hectares
+Projected year: 2026
+Rainfall: {climate["rainfall"]} mm
+Temperature: {climate["temp"]} °C
+Results: {results}
+"""
+
+    try:
+        response = gemini_client.models.generate_content(
+            model="gemini-3-flash-preview",
+            contents=prompt
+        )
+
+        if not response.text:
+            return fallback_recommendation(country, land_size, climate, results)
+
+        return limit_text(response.text)
+
+    except Exception as e:
+        print(f"Gemini recommendation error: {e}")
+        return fallback_recommendation(country, land_size, climate, results)
 
 
 @app.get("/")
 async def root():
-    return {"message": "Crop Yield Prediction API", "frontend": "/ui/index.html"}
+    return {
+        "message": "Crop Yield Prediction API",
+        "frontend": "/ui/index.html"
+    }
 
 
 @app.post("/predict")
 async def predict_yield(req: Request):
     if req.country not in COUNTRIES:
-        raise HTTPException(400, f"Invalid country. Available: {list(COUNTRIES.keys())}")
-    
+        raise HTTPException(
+            400,
+            f"Invalid country. Available: {list(COUNTRIES.keys())}"
+        )
+
     climate = COUNTRIES[req.country]
     results = []
-    
+
     for crop in req.crops:
         if crop not in CROPS:
             continue
+
         try:
             y = predict_crop(CROPS[crop], climate['rainfall'], climate['temp'])
+
             results.append({
                 'crop': crop.title(),
                 'yield_per_ha': round(y, 2),
                 'total_production': round(y * req.land_size, 2)
             })
+
         except Exception as e:
             print(f"Error predicting {crop}: {e}")
             continue
-    
+
     if not results:
         raise HTTPException(400, "No valid predictions")
-    
-    avg = np.mean([r['yield_per_ha'] for r in results])
-    
+
+    recommendation = generate_ai_recommendation(
+        country=req.country,
+        land_size=req.land_size,
+        climate=climate,
+        results=results
+    )
+
     return {
         'status': 'success',
         'results': results,
@@ -142,7 +233,7 @@ async def predict_yield(req: Request):
             'rainfall': climate['rainfall'],
             'temp': climate['temp']
         },
-        'recommendation': f"Based on climate data from {req.country.title()}, expected average yield is {avg:,.0f} hg/ha. Climate conditions are suitable for selected crops. Ensure proper agricultural inputs for optimal results."
+        'recommendation': recommendation
     }
 
 

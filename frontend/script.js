@@ -62,6 +62,13 @@ let simulationController = null;
 overlay.style.display = 'none';
 resultsSection.style.display = 'none';
 aiSection.style.display = 'none';
+const aiContainer = document.querySelector('#ai-output');
+
+if (aiContainer) {
+    aiContainer.innerHTML = `
+        <p class="ai-placeholder">AI recommendation will be generated after the simulation completes.</p>
+    `;
+}
 
 /* =========================================================
    RUN SIMULATION
@@ -206,24 +213,42 @@ function renderYieldDetails(results) {
    RENDER AI RECOMMENDATION
 ========================================================= */
 function renderAIRecommendation(data, country, landSize) {
-    const aiContainer = aiSection.querySelector('.ai-output');
-    
+    const aiContainer = document.querySelector('#ai-output');
+
+    if (!aiContainer) return;
+
     const countryName = country.charAt(0).toUpperCase() + country.slice(1).replace('_', ' ');
-    const cropsList = data.results.map(r => r.crop).join(', ');
-    
+    const cropsList = data.results.map(result => result.crop).join(', ');
+    const recommendation = data.recommendation || "No AI recommendation was generated for this simulation.";
+
     aiContainer.innerHTML = `
-        <div style="line-height: 1.8;">
-            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
-                ${data.recommendation}
+        <article class="ai-card">
+            <p class="ai-recommendation-text">
+                ${recommendation}
             </p>
-            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin: 1.5rem 0;">
-            <div style="display: grid; gap: 0.75rem;">
-                <p><strong>📍 Location:</strong> ${countryName}, West Africa</p>
-                <p><strong>🌾 Selected Crops:</strong> ${cropsList}</p>
-                <p><strong>📏 Land Size:</strong> ${landSize} hectares</p>
-                <p><strong>📅 Projection Year:</strong> 2026</p>
+
+            <div class="ai-summary-grid">
+                <div class="ai-summary-item">
+                    <span class="ai-summary-label">Location</span>
+                    <strong>${countryName}</strong>
+                </div>
+
+                <div class="ai-summary-item">
+                    <span class="ai-summary-label">Selected Crops</span>
+                    <strong>${cropsList}</strong>
+                </div>
+
+                <div class="ai-summary-item">
+                    <span class="ai-summary-label">Land Size</span>
+                    <strong>${landSize} hectares</strong>
+                </div>
+
+                <div class="ai-summary-item">
+                    <span class="ai-summary-label">Projection Year</span>
+                    <strong>2026</strong>
+                </div>
             </div>
-        </div>
+        </article>
     `;
 }
 

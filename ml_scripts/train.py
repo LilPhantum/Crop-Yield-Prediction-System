@@ -1,12 +1,8 @@
 """
 =================================================================================
-ULTIMATE CROP YIELD PREDICTION SYSTEM
+CROP YIELD PREDICTION SYSTEM
 Using Kaggle Dataset with Rainfall, Temperature, AND Pesticides
 =================================================================================
-
-THIS IS THE BREAKTHROUGH!
-
-The dataset includes PESTICIDES data - the missing agricultural input factor!
 
 Dataset: 28,242 samples from 101 countries (1990-2013)
 Features: Rainfall + Temperature + Pesticides Usage

@@ -516,6 +516,46 @@ p {
     border-radius: 14px;
 }
 
+
+
+/* =============================================== */
+
+.ai-card {
+    line-height: 1.8;
+}
+
+.ai-recommendation-text {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+}
+
+.ai-summary-grid {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.ai-summary-item {
+    background-color: rgba(255, 255, 255, 0.08);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.ai-summary-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #a7f3d0;
+    margin-bottom: 0.3rem;
+}
+
+.ai-summary-item strong {
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
 /* =====================================================
    FOOTER
 ===================================================== */
