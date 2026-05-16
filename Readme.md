@@ -1,172 +1,43 @@
-# Crop Yield Prediction System Under Climate Variability
+# ClimateCropSim: Crop Yield Prediction Under Climate Variability
 
-A machine learning-based system for predicting crop yields across West Africa using ensemble modeling and climate data.
+ClimateCropSim is a machine learning-based crop yield prediction system designed to estimate crop yield under projected climate conditions. The system uses rainfall, temperature, pesticide input, crop type, country selection, and land size to generate crop-specific yield predictions, visual charts, and AI-assisted recommendations.
 
-## 🌾 Overview
+## Overview
 
-This system predicts crop yields for 8 major crops (Maize, Rice, Sorghum, Cassava, Wheat, Yam, Potatoes, Soybeans) using climate variables (temperature, rainfall) and agricultural inputs (pesticides as proxy for farm management). The models are trained on multi-country African agricultural data and deployed via a web interface for interactive predictions.
+This project supports crop yield simulation for major crops used in the system: Maize, Rice, Sorghum, Cassava, Wheat, Yam, Potatoes, and Soybeans. The prediction engine is built with trained machine learning models and deployed through a web interface that allows users to run simulations without interacting directly with the model code.
 
-## 📊 Key Features
+The system focuses on selected African countries and was developed as a computational simulation system for predicting crop yield under climate variability.
 
-- **High Accuracy:** Average R² = 0.81 across all crops (range: 0.61-0.96)
-- **Ensemble Models:** Combines Random Forest, Gradient Boosting, and Ridge Regression
-- **Cross-Country Training:** 12 African countries, 2,776 samples (1990-2013)
-- **Advanced Feature Engineering:** 20+ features including climate interactions and stress indicators
-- **Web Interface:** Interactive prediction system with ApexCharts visualizations
-- **Climate Scenarios:** Analyze yield under different climate conditions (baseline, warming, drought, etc.)
+## Key Features
 
-## 🎯 Performance
+- Crop yield prediction under projected 2026 climate conditions
+- Crop-specific machine learning models
+- Support for multiple crop selection
+- Climate-based prediction using rainfall and temperature values
+- Feature engineering for climate stress and interaction variables
+- Total production calculation based on land size
+- Interactive climate and yield visualizations using ApexCharts
+- AI-based recommendation generated from completed prediction output
+- FastAPI backend for API-based prediction
+- Responsive frontend interface using HTML, CSS, and JavaScript
 
-| Crop | Model | Test R² | Status |
-|------|-------|---------|--------|
-| Rice | Gradient Boosting | 0.96 | ✓✓ Outstanding |
-| Maize | Gradient Boosting | 0.91 | ✓✓ Excellent |
-| Sweet Potatoes | Gradient Boosting | 0.88 | ✓✓ Excellent |
-| Soybeans | Ensemble | 0.85 | ✓✓ Excellent |
-| Wheat | Random Forest | 0.82 | ✓✓ Excellent |
-| Potatoes | Ensemble | 0.78 | ✓✓ Excellent |
-| Cassava | Random Forest | 0.67 | ✓ Good |
-| Sorghum | Gradient Boosting | 0.61 | ✓ Good |
+## Supported Crops
 
-## 🛠️ Technology Stack
+The system currently supports the following crops:
 
-**Backend:**
-- Python 3.8+
-- FastAPI (REST API)
-- scikit-learn (ML models)
-- NumPy, Pandas (data processing)
-- joblib (model serialization)
+- Maize
+- Rice
+- Sorghum
+- Cassava
+- Wheat
+- Yam
+- Potatoes
+- Soybeans
 
-**Frontend:**
-- HTML5, CSS3, JavaScript
-- ApexCharts (data visualization)
-- Responsive design
+## Supported Countries
 
-**Data Sources:**
-- FAO Agricultural Database
-- World Bank Climate Data
-- NASA POWER Climate Archive
+The deployed interface currently supports predictions for the following countries:
 
-## 📁 Project Structure
-
-```
-CropYieldPrediction/
-├── backend/
-│   ├── models/                  # Trained ML models (.pkl files)
-│   ├── data/
-│   │   └── yield_df.csv        # Training dataset
-│   ├── server.py               # FastAPI backend
-│   └── requirements.txt
-│
-├── frontend/
-│   ├── index.html              # Main interface
-│   ├── script.js               # Application logic
-│   ├── charts.js               # ApexCharts visualizations
-│   └── styles.css              # Styling
-│
-└── ml_scripts/
-    ├── train.py                # Model training script
-    └── predict.py              # Prediction utilities
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8 or higher
-- pip package manager
-
-### Installation
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/yourusername/crop-yield-prediction.git
-cd crop-yield-prediction
-```
-
-2. **Install dependencies**
-```bash
-cd backend
-pip install -r requirements.txt
-```
-
-3. **Start the backend server**
-```bash
-python server.py
-```
-Server runs on: `http://localhost:3000`
-
-4. **Access the frontend**
-- Option 1: Navigate to `http://localhost:3000/ui/index.html`
-- Option 2: Open `frontend/index.html` directly in browser
-
-## 📝 Usage
-
-### Web Interface
-
-1. Select crops from dropdown (up to 8 crops)
-2. Choose country from West African region
-3. Enter land size in hectares
-4. Click "Run Simulation"
-5. View results:
-   - Climate data visualization (rainfall & temperature)
-   - Crop yield predictions (bar chart)
-   - Detailed yield breakdown
-   - AI-generated recommendations
-
-### API Endpoint
-
-```python
-POST /predict
-Content-Type: application/json
-
-{
-  "crops": ["maize", "rice", "sorghum"],
-  "country": "ghana",
-  "land_size": 2.5
-}
-
-Response:
-{
-  "status": "success",
-  "results": [
-    {
-      "crop": "Maize",
-      "yield_per_ha": 18317.11,
-      "total_production": 45792.78
-    }
-  ],
-  "climate": {
-    "rainfall": 1200,
-    "temp": 26.8
-  },
-  "recommendation": "..."
-}
-```
-
-## 🔬 Methodology
-
-### Feature Engineering
-The system uses 20+ engineered features:
-- **Core:** rainfall, temperature, pesticides
-- **Interactions:** temp_rain_interaction, pesticide_intensity
-- **Climate Stress:** growing_degree_days, heat_stress, cold_stress
-- **Polynomials:** temperature_sq, rainfall_sq, pesticides_sq
-- **Transformations:** log_pesticides, log_rainfall
-- **Temporal:** years_since_1990, tech_trend
-- **Categorical:** rain_cat_dry, rain_cat_moderate, rain_cat_wet, rain_cat_very_wet
-
-### Model Training
-- **Training Period:** 1990-2010
-- **Testing Period:** 2011-2013
-- **Validation:** Temporal splitting (prevents data leakage)
-- **Ensemble Strategy:** Weighted averaging by validation R²
-
-### Countries in Training Data
-Cameroon, Ghana, Kenya, Mali, Niger, Senegal, Burkina Faso, South Africa, Egypt, Morocco, Algeria, Tunisia
-
-## 📊 Supported Countries
-
-Current predictions available for:
 - Cameroon
 - Ghana
 - Kenya
@@ -178,79 +49,268 @@ Current predictions available for:
 - Egypt
 - Morocco
 
-## 🌍 Climate Scenarios
+## Model Performance
 
-The system supports 11 climate scenarios:
-1. Baseline (2026 Trends)
-2. Optimistic (Good Practices)
-3. Moderate Warming (+1°C)
-4. High Warming (+2°C)
-5. Severe Warming (+3°C)
-6. Moderate Drought (-15% rain)
-7. Severe Drought (-30% rain)
-8. Wet Conditions (+20% rain)
-9. Hot & Dry (+2°C, -20% rain)
-10. Extreme Stress (+3°C, -30% rain)
-11. Best Management (+inputs, +rain)
+The table below shows the available model evaluation results. The coefficient of determination, represented as R², measures how well the model explains crop yield variation during testing. A higher R² value indicates stronger predictive performance.
 
-## 📈 Key Findings
+| Crop | Selected Model | Test R² | Performance Level |
+|------|----------------|--------:|-------------------|
+| Rice | Gradient Boosting | 0.9617 | Very Strong |
+| Maize | Gradient Boosting | 0.9080 | Very Strong |
+| Soybeans | Ensemble Model | 0.8524 | Strong |
+| Wheat | Random Forest | 0.8157 | Strong |
+| Potatoes | Ensemble Model | 0.7841 | Moderate to Strong |
+| Cassava | Random Forest | 0.6728 | Moderate |
+| Sorghum | Gradient Boosting | 0.6067 | Moderate |
+| Yam | Crop Model | Pending | Awaiting final evaluation |
 
-1. **Agricultural inputs > Climate:** Pesticide intensity is the #1 or #2 most important feature for most crops
-2. **Crop-specific vulnerabilities:** Cassava shows -46% yield under hot+dry conditions
-3. **Non-linear responses:** Rice benefits from moderate drought (reduces flooding), Wheat prefers hot+dry
-4. **Management potential:** Good agricultural practices can improve yields 4-16%, offsetting moderate climate stress
+## 2026 Scenario Prediction Results
 
-## 🔒 Limitations
+The system also supports scenario-based crop yield projection for 2026. The table below presents the baseline prediction, best case, worst case, and uncertainty range generated from the scenario analysis.
 
-- Trained on historical data (1990-2013); may not capture unprecedented climate conditions
-- Pesticides used as proxy for overall farm management (not perfect)
-- Does not account for: pests, diseases, extreme events, soil degradation, socio-economic factors
-- Regional models may not capture highly localized conditions
+| Crop | 2026 Baseline Prediction | Best Case | Worst Case | Uncertainty Range |
+|------|-------------------------:|----------:|-----------:|------------------:|
+| Maize | 16,154 hg/ha | 17,297 hg/ha | 14,626 hg/ha | 2,671 hg/ha |
+| Rice | 20,521 hg/ha | 22,842 hg/ha | 18,606 hg/ha | 4,236 hg/ha |
+| Wheat | 17,127 hg/ha | 22,074 hg/ha | 16,948 hg/ha | 5,126 hg/ha |
+| Cassava | 132,526 hg/ha | 140,274 hg/ha | 71,413 hg/ha | 68,860 hg/ha |
+| Sorghum | 11,346 hg/ha | 12,034 hg/ha | 10,317 hg/ha | 1,717 hg/ha |
+| Potatoes | 78,203 hg/ha | 86,643 hg/ha | 69,660 hg/ha | 16,984 hg/ha |
+| Soybeans | 10,734 hg/ha | 13,568 hg/ha | 10,416 hg/ha | 3,152 hg/ha |
 
-## 🛣️ Future Work
+## Technology Stack
 
-- [ ] Add real-time weather data integration
-- [ ] Incorporate soil quality data
-- [ ] Extend to more African countries
-- [ ] Add mobile application
-- [ ] Include economic analysis (cost-benefit)
-- [ ] Integrate satellite imagery for yield monitoring
-- [ ] Add farmer feedback loop for model improvement
+### Backend
 
-## 📄 Citation
+- Python
+- FastAPI
+- Uvicorn
+- Scikit-learn
+- NumPy
+- Pandas
+- Joblib
+- Google GenAI Library
+- Python-dotenv
 
-If you use this work, please cite:
+### Frontend
 
+- HTML5
+- CSS3
+- JavaScript
+- ApexCharts
+
+### Data and Communication
+
+- JSON for frontend and backend communication
+- Serialized machine learning models stored as `.pkl` files
+- Environment variable file for API key configuration
+
+## Project Structure
+
+```text
+CropYieldPrediction/
+├── backend/
+│   ├── models/
+│   │   └── trained crop model files
+│   ├── server.py
+│   ├── gemini.env
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── index.html
+│   ├── styles.css
+│   ├── script.js
+│   ├── chart.js
+│   └── images/
+│
+├── ml_scripts/
+│   ├── training scripts
+│   └── prediction scripts
+│
+└── README.md
 ```
-[Your Name]. (2026). Machine Learning-Based Crop Yield Prediction System 
-for West Africa Under Climate Variability. 
-GitHub repository: https://github.com/yourusername/crop-yield-prediction
+
+## How the System Works
+
+1. The user opens the web interface.
+2. The user selects one or more crops.
+3. The user selects a country.
+4. The user enters land size in hectares.
+5. The frontend validates the input.
+6. The frontend sends the request to the FastAPI backend as JSON.
+7. The backend retrieves climate values for the selected country.
+8. The backend generates engineered prediction features.
+9. The trained crop-specific model is loaded.
+10. The model predicts yield per hectare.
+11. The system calculates total production based on land size.
+12. The AI recommendation module explains the completed output.
+13. The frontend displays climate charts, yield charts, result summaries, and AI recommendation.
+
+## Feature Engineering
+
+The prediction system uses engineered features to improve model performance. These features help represent climate stress, crop response, and nonlinear relationships between variables.
+
+Examples of engineered features include:
+
+- Rainfall
+- Temperature
+- Pesticides
+- Temperature-rainfall interaction
+- Pesticide intensity
+- Growing degree days
+- Heat stress
+- Cold stress
+- Temperature deviation from 25°C
+- Squared rainfall and temperature values
+- Log rainfall and log pesticide values
+- Rainfall category indicators
+- Technology trend
+- Years since 1990
+
+## Machine Learning Methods
+
+Different algorithms were selected for different crops based on their evaluation performance. The main machine learning methods used in the system include:
+
+- Random Forest
+- Gradient Boosting
+- Ridge Regression
+- Ensemble modelling
+
+The system uses crop-specific modelling because different crops respond differently to rainfall, temperature, and agricultural input variables.
+
+## AI-Based Recommendation
+
+The system includes an AI-based recommendation component powered by Gemini API. This component receives the completed prediction output and generates a short advisory explanation for the user.
+
+The AI recommendation does not perform the numerical crop yield prediction and does not modify the output of the trained machine learning models. Its purpose is to make the prediction result easier to understand.
+
+## API Usage
+
+### Prediction Endpoint
+
+```http
+POST /predict
+Content-Type: application/json
 ```
 
-## 📝 License
+### Sample Request
 
-This project is licensed under the MIT License - see LICENSE file for details.
+```json
+{
+  "crops": ["maize", "rice", "soybeans"],
+  "country": "ghana",
+  "land_size": 2.5
+}
+```
 
-## 👥 Contributors
+### Sample Response
 
-- [Your Name] - Initial work and development
+```json
+{
+  "status": "success",
+  "results": [
+    {
+      "crop": "Maize",
+      "yield_per_ha": 16154,
+      "total_production": 40385
+    },
+    {
+      "crop": "Rice",
+      "yield_per_ha": 20521,
+      "total_production": 51302.5
+    }
+  ],
+  "climate": {
+    "rainfall": 1200,
+    "temp": 26.8
+  },
+  "recommendation": "Rice shows the stronger projected yield under the selected climate and land size, while maize remains suitable under the same conditions."
+}
+```
 
-## 🙏 Acknowledgments
+## Installation and Setup
 
-- FAO for agricultural yield data
-- World Bank for climate data
-- NASA POWER for additional climate information
-- scikit-learn community
-- FastAPI framework
+### Prerequisites
 
-## 📧 Contact
+- Python 3.10 or higher
+- pip
+- Modern web browser
+- Internet connection for Gemini API recommendation
 
-For questions or collaboration:
-- Email: your.email@example.com
-- GitHub: [@yourusername](https://github.com/yourusername)
+### Backend Setup
 
-## 🔗 Links
+```bash
+cd backend
+pip install -r requirements.txt
+python server.py
+```
 
-- [Documentation](docs/)
-- [Dataset Information](data/README.md)
-- [Model Details](ml_scripts/README.md)
+The backend server runs on:
+
+```text
+http://localhost:3000
+```
+
+### Frontend Setup
+
+Open the frontend in a browser, or serve it through the backend if the project is configured to expose the frontend files.
+
+```text
+frontend/index.html
+```
+
+## Environment Variables
+
+The Gemini API key should be stored in an environment file instead of being written directly inside the source code.
+
+Example `gemini.env` file:
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+The backend should load the API key from the environment file before creating the Gemini client.
+
+## Data Sources
+
+The system was developed using agricultural and climate-related data. The major data source categories include:
+
+- FAOSTAT agricultural data
+- NASA POWER climate data
+- Climate and crop yield records used for model training and evaluation
+
+## Limitations
+
+The system has the following limitations:
+
+- It depends on historical data, so prediction quality depends on dataset accuracy and completeness.
+- The deployed version uses selected climate variables and does not fully include soil fertility, fertilizer usage, irrigation, seed quality, pests, diseases, or farm management practices.
+- Country-level climate values may not capture local variations within states, districts, or farming communities.
+- The AI recommendation depends on an external API and requires internet access.
+- Prediction results should be treated as decision support estimates, not guaranteed farm outcomes.
+
+## Future Research Direction
+
+Future versions of the system can be improved by expanding the prediction coverage to Nigeria, including all 36 states and the Federal Capital Territory. This would allow predictions to reflect local agricultural and climatic differences across Nigerian regions.
+
+The system can also be improved by including more environmental and soil-related variables such as soil type, soil fertility, soil erosion, soil moisture, irrigation, fertilizer usage, humidity, solar radiation, pest occurrence, disease outbreak, and crop variety.
+
+Another important future direction is the use of real-time data. Future versions can connect to weather APIs, satellite data, soil sensors, and remote sensing systems so that predictions are based on current and location-specific conditions rather than historical data alone.
+
+A local AI recommendation system can also be developed for Nigerian agriculture. This would allow the system to provide more relevant recommendations based on local crops, local climate patterns, regional farming practices, and state-specific agricultural challenges.
+
+## Disclaimer
+
+AI-generated recommendations may contain errors and should not be treated as guaranteed agricultural advice. The prediction results are intended to support decision-making and should be used alongside agricultural knowledge, expert judgment, and local farming conditions.
+
+## Author
+
+Wakili Muazu Umar  
+Matric Number: 22/03CMP039  
+Department of Computer Science  
+Faculty of Computing, Engineering and Technology  
+Al-Hikmah University, Ilorin, Nigeria
+
+## Project Title
+
+Design and Implementation of a Computational Simulation System for Predicting Crop Yield Under Climate Variability
