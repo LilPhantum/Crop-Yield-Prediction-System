@@ -89,11 +89,99 @@
 
         <!-- ================= HOW IT WORKS ================= -->
         <section class="workflow-section">
+        
             <h2 class="section-title">How the System Works</h2>
+        
             <p class="section-description">
-                The simulation system integrates crop parameters with projected climate variables such as rainfall and temperature.
-                Users define their farming context, and the model estimates potential yield outcomes under climate variability.
+                The system predicts crop yield using trained machine learning models and climate-related variables such as
+                rainfall,
+                temperature, and agricultural input values. Users select crops, choose a country, and enter land size, after
+                which
+                the backend processes the request, generates prediction features, runs crop-specific models, and returns the
+                result
+                through charts, yield summaries, and AI-based recommendations.
             </p>
+        
+            <div class="model-performance-section">
+        
+                <h3 class="subsection-title">Model Capability and Performance</h3>
+        
+                <p class="section-description">
+                    Different machine learning algorithms were selected for different crops depending on which model produced
+                    the
+                    strongest prediction performance during testing. The coefficient of determination (R²) was used to evaluate
+                    how
+                    well each model explains crop yield variation.
+                </p>
+        
+                <div class="performance-table-wrapper">
+                    <table class="performance-table">
+        
+                        <thead>
+                            <tr>
+                                <th>Crop</th>
+                                <th>Selected Model</th>
+                                <th>Test R²</th>
+                            </tr>
+                        </thead>
+        
+                        <tbody>
+                            <tr>
+                                <td>Maize</td>
+                                <td>Gradient Boosting</td>
+                                <td>0.9080</td>
+                            </tr>
+        
+                            <tr>
+                                <td>Rice</td>
+                                <td>Gradient Boosting</td>
+                                <td>0.9617</td>
+                            </tr>
+        
+                            <tr>
+                                <td>Wheat</td>
+                                <td>Random Forest</td>
+                                <td>0.8157</td>
+                            </tr>
+        
+                            <tr>
+                                <td>Cassava</td>
+                                <td>Random Forest</td>
+                                <td>0.6728</td>
+                            </tr>
+        
+                            <tr>
+                                <td>Sorghum</td>
+                                <td>Gradient Boosting</td>
+                                <td>0.6067</td>
+                            </tr>
+        
+                            <tr>
+                                <td>Potatoes</td>
+                                <td>Ensemble Model</td>
+                                <td>0.7841</td>
+                            </tr>
+        
+                            <tr>
+                                <td>Soybeans</td>
+                                <td>Ensemble Model</td>
+                                <td>0.8524</td>
+                            </tr>
+                        </tbody>
+        
+                    </table>
+                </div>
+        
+                <p class="section-description" style="margin-top: 1.5rem;">
+                    In machine learning prediction systems, an R² value above 0.90 is generally considered very strong,
+                    values between 0.80 and 0.89 are considered strong, values between 0.60 and 0.79 are considered moderate,
+                    while values below 0.60 are considered weak. Based on the testing results, the developed models produced
+                    strong predictive performance for crops such as rice, maize, soybeans, wheat, and potatoes, while cassava
+                    and sorghum showed moderate prediction performance.
+                </p>
+        
+            </div>
+        
         </section>
 
         <!-- ================= SIMULATION INPUT ================= -->
@@ -227,6 +315,11 @@
             <div class="ai-output" id="ai-output">
                 <p class="ai-placeholder">Run a simulation to generate an AI recommendation.</p>
             </div>
+
+            <p class="ai-disclaimer">
+                Disclaimer: AI-generated recommendations may contain inaccuracies and should be used only as advisory support
+                alongside agricultural knowledge and professional judgment.
+            </p>
         </section>
 
         

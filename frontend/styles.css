@@ -46,7 +46,6 @@ h3 {
 p {
     font-size: 1rem;
     color: #4b5563;
-    max-width: 70ch;
 }
 
 .section-title {
@@ -228,6 +227,92 @@ p {
 ===================================================== */
 .workflow-section {
     margin-bottom: 5rem;
+}
+
+.workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+    margin-top: 2rem;
+}
+
+.workflow-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    padding: 1.4rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.workflow-card h3 {
+    margin-bottom: 0.7rem;
+    font-size: 1.1rem;
+    color: #1f5132;
+}
+
+.workflow-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #444444;
+}
+
+.model-performance-section {
+    margin-top: 2.5rem;
+}
+
+.performance-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.performance-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e6e6e6;
+    font-size: 0.95rem;
+}
+
+.performance-table th {
+    background: #1f5132;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.performance-table td {
+    color: #333333;
+}
+
+.performance-table tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 980px) {
+    .workflow-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .workflow-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .performance-table th,
+    .performance-table td {
+        padding: 0.8rem;
+        font-size: 0.85rem;
+    }
 }
 
 /* =====================================================
@@ -554,6 +639,14 @@ p {
 .ai-summary-item strong {
     color: #ffffff;
     font-size: 0.95rem;
+}
+
+.ai-disclaimer {
+    margin-top: 1.2rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
 }
 
 /* =====================================================
